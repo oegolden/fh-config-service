@@ -1,0 +1,50 @@
+{
+  "category": "custom_fields/definitions",
+  "targetEnv": "FH_API_KEY__SANDBOX",
+  "timestamp": 1761277202010,
+  "items": [
+    {
+      "display_name": "Detected by",
+      "field_id": "636d65c7-ee70-432b-9ad0-0dfced27d2d5",
+      "field_type": "single_select",
+      "slug": "detected_by",
+      "description": null,
+      "required": false,
+      "required_at_milestone_id": null,
+      "permissible_values": [
+        "Automated Monitoring",
+        "Customers",
+        "Internally"
+      ]
+    },
+    {
+      "display_name": "Reporter",
+      "field_id": "8baa4a3e-b3e5-408d-96f7-5bbe8485dede",
+      "field_type": "multi_select",
+      "slug": "reporter",
+      "description": "",
+      "required": true,
+      "required_at_milestone_id": null,
+      "permissible_values": [
+        "Alerting",
+        "Client/Support",
+        "Internal",
+        "IT"
+      ]
+    },
+    {
+      "display_name": "Affected Users",
+      "field_id": "3c43efdf-7459-4747-bb54-d21a8f19e166",
+      "field_type": "multi_select",
+      "slug": "affected_users",
+      "description": "Selector to determine which company or client is affected by this incident",
+      "required": false,
+      "required_at_milestone_id": null,
+      "permissible_values": [
+        "company",
+        "company 1",
+        "company 2"
+      ]
+    }
+  ]
+}

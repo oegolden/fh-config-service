@@ -1,0 +1,21 @@
+{
+  "category": "custom_fields/definitions",
+  "targetEnv": "FH_API_KEY_STATUSBOARD_SANDBOX",
+  "timestamp": 1761277114097,
+  "items": [
+    {
+      "display_name": "Detected by",
+      "field_id": "39cee4ff-a858-4e0e-ab60-a202a07a4c7f",
+      "field_type": "single_select",
+      "slug": "detected_by",
+      "description": null,
+      "required": false,
+      "required_at_milestone_id": null,
+      "permissible_values": [
+        "Automated Monitoring",
+        "Customers",
+        "Internally"
+      ]
+    }
+  ]
+}
