@@ -1,0 +1,587 @@
+{
+  "category": "incident_types",
+  "targetEnv": "FH_API_KEY_STATUSBOARD_SANDBOX",
+  "timestamp": 1761325913504,
+  "items": [
+    {
+      "id": "a7b20db2-512b-417a-ab25-48e90db41dfb",
+      "name": "Customer-facing system outage",
+      "description": "",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "A core business system is unavailable or malfunctioning",
+        "labels": {},
+        "severity": "SEV1",
+        "tag_list": [],
+        "runbook_ids": [
+          "b8282a9a-76cc-42f9-bb83-72bf9932432a"
+        ],
+        "team_ids": [],
+        "custom_fields": [],
+        "impacts": [
+          {
+            "id": "36c4ff13-ffc4-4bbd-97b5-36f42dc98550",
+            "name": "Production",
+            "condition_id": "588b42b5-4061-4043-b8c2-56fa4d114189",
+            "condition_name": "Degraded",
+            "type": "environment"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [
+          {
+            "id": "36c4ff13-ffc4-4bbd-97b5-36f42dc98550",
+            "name": "Production",
+            "condition_id": "588b42b5-4061-4043-b8c2-56fa4d114189",
+            "condition_name": "Degraded",
+            "type": "environment"
+          }
+        ],
+        "runbooks": {
+          "b8282a9a-76cc-42f9-bb83-72bf9932432a": "High severity incident response"
+        },
+        "teams": []
+      },
+      "created_at": "2025-08-05T19:27:32.026Z",
+      "updated_at": "2025-09-25T01:52:10.339Z"
+    },
+    {
+      "id": "270a4fee-0d07-48f7-95e7-fcb3e28634cd",
+      "name": "Deployment pipeline issue",
+      "description": "Interruption in the deployment pipeline, such as Galaxy degradation",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "Deployments are impacted: [add more details]",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV3",
+        "priority": "P2",
+        "tag_list": [],
+        "runbook_ids": [
+          "30200e94-c0bc-4bec-9d8d-b08c1e1a418c"
+        ],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": [
+          {
+            "id": "07cd67f5-c28b-4e8d-b218-b198928ce78c",
+            "name": "Platform - Deployments",
+            "condition_id": "6cbf3fdc-a11e-497e-9ec0-b872ec530586",
+            "condition_name": "Unavailable",
+            "type": "functionality"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [
+          {
+            "id": "07cd67f5-c28b-4e8d-b218-b198928ce78c",
+            "name": "Platform - Deployments",
+            "condition_id": "6cbf3fdc-a11e-497e-9ec0-b872ec530586",
+            "condition_name": "Unavailable",
+            "type": "functionality"
+          }
+        ],
+        "environments": [],
+        "runbooks": {
+          "30200e94-c0bc-4bec-9d8d-b08c1e1a418c": "Developer Experience Incident"
+        },
+        "teams": []
+      },
+      "created_at": "2025-08-05T19:27:32.038Z",
+      "updated_at": "2025-10-08T05:24:56.206Z"
+    },
+    {
+      "id": "d35c354f-c7eb-4b80-be2b-f9c4ef305382",
+      "name": "Game Day incident",
+      "description": "Not a real incident–used for practicing incident response.",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "GAMEDAY",
+        "tag_list": [],
+        "runbook_ids": [
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51"
+        ],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51": "Default"
+        },
+        "teams": []
+      },
+      "created_at": "2025-08-05T19:27:32.072Z",
+      "updated_at": "2025-10-08T05:25:08.081Z"
+    },
+    {
+      "id": "e807feff-67c1-47d3-b7a5-b955fce7386f",
+      "name": "Internal Issue",
+      "description": "Internal issue that is not as major as an outage and does not impact the deployment pipeline.",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "Internal incident. No direct customer impact. Example might be a developer experience issue.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV4",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [
+          {
+            "field_id": "39cee4ff-a858-4e0e-ab60-a202a07a4c7f",
+            "value_string": "Internally"
+          }
+        ],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-09-25T01:17:03.114Z",
+      "updated_at": "2025-10-08T05:25:17.393Z"
+    },
+    {
+      "id": "5cefa39d-6fc3-414f-abb0-dd9a05b80a23",
+      "name": "Internal system outage",
+      "description": "Major internal issue that prevents use of some internal tool that does not fall under deployment pipeline issue",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "A system that isn't customer-facing or doesn't impact customer data processing is unavailable",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV2",
+        "priority": "P2",
+        "tag_list": [
+          "internal"
+        ],
+        "runbook_ids": [
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51"
+        ],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51": "Default"
+        },
+        "teams": []
+      },
+      "created_at": "2025-08-05T19:27:32.042Z",
+      "updated_at": "2025-10-08T05:25:30.331Z"
+    },
+    {
+      "id": "d58f6428-6e03-4a47-99ac-1154cbddf7b3",
+      "name": "IT Incident",
+      "description": "Major IT task that requires attention, not submitted during off-hours",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [
+          "1d8ef324-86fd-4d87-9770-03f24e35aa6b"
+        ],
+        "team_ids": [
+          "ddfeb6a1-1667-4ca7-b9a1-7db7f53e3d77",
+          "4321b2d1-7661-4bf5-a60e-b502d31bc4f1"
+        ],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "1d8ef324-86fd-4d87-9770-03f24e35aa6b": "IT Runbook"
+        },
+        "teams": [
+          {
+            "id": "ddfeb6a1-1667-4ca7-b9a1-7db7f53e3d77",
+            "name": "IT Engineering",
+            "description": "Domain on-call for IT Engineering",
+            "slug": "it-engineering",
+            "created_at": "2025-09-24T17:52:10.424Z",
+            "updated_at": "2025-09-26T04:47:28.745Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/ddfeb6a1-1667-4ca7-b9a1-7db7f53e3d77.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          },
+          {
+            "id": "4321b2d1-7661-4bf5-a60e-b502d31bc4f1",
+            "name": "IT Support",
+            "description": "Members of the IT Support & Engineering team focused on end-user support requests and issues.",
+            "slug": "it-support",
+            "created_at": "2025-09-24T17:55:27.741Z",
+            "updated_at": "2025-09-24T17:55:27.741Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/4321b2d1-7661-4bf5-a60e-b502d31bc4f1.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          }
+        ]
+      },
+      "created_at": "2025-09-25T01:31:09.511Z",
+      "updated_at": "2025-10-08T05:25:44.608Z"
+    },
+    {
+      "id": "84d48feb-a3d0-408c-a58f-aa68f6bcd8c9",
+      "name": "IT Support | Off-Hours Request",
+      "description": "An IT request submitted during IT off-hours",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [
+          "8d39924a-3028-4742-93d9-58c9cd60b221"
+        ],
+        "team_ids": [
+          "ff6c2394-c620-42a1-ae37-41f32c5c363a"
+        ],
+        "private_incident": false,
+        "custom_fields": [
+          {
+            "field_id": "39cee4ff-a858-4e0e-ab60-a202a07a4c7f",
+            "value_string": "Internally"
+          }
+        ],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "8d39924a-3028-4742-93d9-58c9cd60b221": "IT-off-hours-support"
+        },
+        "teams": [
+          {
+            "id": "ff6c2394-c620-42a1-ae37-41f32c5c363a",
+            "name": "IT Support | Off-Hours Team",
+            "description": "Members of the IT Support Team responsible for off-hours, end-user support.",
+            "slug": "it-support-off-hours-team",
+            "created_at": "2025-09-24T17:56:00.868Z",
+            "updated_at": "2025-09-24T17:56:00.868Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/ff6c2394-c620-42a1-ae37-41f32c5c363a.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          }
+        ]
+      },
+      "created_at": "2025-09-24T18:27:34.308Z",
+      "updated_at": "2025-10-08T05:25:54.372Z"
+    },
+    {
+      "id": "75157a0e-f45f-4955-be64-76f899502542",
+      "name": "Performance degradation",
+      "description": "Though not at the level of a customer-facing system outage, there has been some degradation in the functionality of AuditBoard services",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "One or more systems is not performing as expected.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV2",
+        "tag_list": [
+          "performance"
+        ],
+        "runbook_ids": [
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51"
+        ],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": [
+          {
+            "id": "36c4ff13-ffc4-4bbd-97b5-36f42dc98550",
+            "name": "Production",
+            "condition_id": "588b42b5-4061-4043-b8c2-56fa4d114189",
+            "condition_name": "Degraded",
+            "type": "environment"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [
+          {
+            "id": "36c4ff13-ffc4-4bbd-97b5-36f42dc98550",
+            "name": "Production",
+            "condition_id": "588b42b5-4061-4043-b8c2-56fa4d114189",
+            "condition_name": "Degraded",
+            "type": "environment"
+          }
+        ],
+        "runbooks": {
+          "fbf6feb4-1a8b-4e3e-851c-3cbf00cf6b51": "Default"
+        },
+        "teams": []
+      },
+      "created_at": "2025-08-05T19:27:32.053Z",
+      "updated_at": "2025-10-08T05:26:05.216Z"
+    },
+    {
+      "id": "7754bfa0-fbba-422d-b85f-e17ac600fbfd",
+      "name": "Privacy Violation",
+      "description": "Private information has been breached, and this breach must be swiftly and discreetly addressed",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "An incident affecting client privacy has been detected, this could be a bug exposing sensitive data, a data breach, a customer accidentally disclosing data through the tool, etc.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV1",
+        "tag_list": [
+          "privacy"
+        ],
+        "runbook_ids": [],
+        "team_ids": [
+          "413db52c-5db0-42fc-952a-c379f2f10ca4"
+        ],
+        "private_incident": true,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": [
+          {
+            "id": "413db52c-5db0-42fc-952a-c379f2f10ca4",
+            "name": "Privacy & Compliance",
+            "description": "",
+            "slug": "privacy-compliance",
+            "created_at": "2025-09-24T17:58:02.830Z",
+            "updated_at": "2025-09-24T17:58:02.830Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/413db52c-5db0-42fc-952a-c379f2f10ca4.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          }
+        ]
+      },
+      "created_at": "2025-08-05T19:27:32.063Z",
+      "updated_at": "2025-10-08T05:26:16.287Z"
+    },
+    {
+      "id": "35e50845-de53-4caa-afe7-e281fafc5da2",
+      "name": "Security Event",
+      "description": "Security issue that does not fall under Vulnerability or Privacy Violation",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV4",
+        "priority": "P1",
+        "tag_list": [
+          "security"
+        ],
+        "runbook_ids": [
+          "7a4e5bee-0c3b-491b-8169-fda8544d75d3"
+        ],
+        "team_ids": [
+          "f52eaddb-6988-4e47-82af-d36c12450272"
+        ],
+        "private_incident": true,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "7a4e5bee-0c3b-491b-8169-fda8544d75d3": "Security Catch-all"
+        },
+        "teams": [
+          {
+            "id": "f52eaddb-6988-4e47-82af-d36c12450272",
+            "name": "Security",
+            "description": "Responsible for ensuring the security and compliance of our systems and data.",
+            "slug": "security",
+            "created_at": "2025-09-24T18:00:05.209Z",
+            "updated_at": "2025-09-24T18:00:05.209Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/f52eaddb-6988-4e47-82af-d36c12450272.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          }
+        ]
+      },
+      "created_at": "2025-08-05T19:27:32.068Z",
+      "updated_at": "2025-10-08T05:26:25.954Z"
+    },
+    {
+      "id": "0e0eb581-5feb-414e-ae50-06f727f99ef1",
+      "name": "SQL run on production",
+      "description": "Updating databases in a customer-facing instance. This maintenance will cause downtime.",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [
+          "a84402c7-5c53-436b-98eb-b323c36877d7",
+          "3f2399a4-6ade-43ae-af66-a935b7b7001b"
+        ],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {
+          "a84402c7-5c53-436b-98eb-b323c36877d7": "Maintenance Response",
+          "3f2399a4-6ade-43ae-af66-a935b7b7001b": "SQL Request"
+        },
+        "teams": []
+      },
+      "created_at": "2025-09-24T18:24:23.400Z",
+      "updated_at": "2025-10-08T05:26:40.769Z"
+    },
+    {
+      "id": "f9534548-f17f-41cd-97b8-295b793ae267",
+      "name": "Vulnerability",
+      "description": "An exploitable vulnerability has been identified in the AuditBoard system that must be addressed quickly and privately",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [
+          "4d17647e-42c5-481c-8b89-e39fe254359e"
+        ],
+        "team_ids": [
+          "f52eaddb-6988-4e47-82af-d36c12450272"
+        ],
+        "private_incident": true,
+        "custom_fields": [
+          {
+            "field_id": "39cee4ff-a858-4e0e-ab60-a202a07a4c7f",
+            "value_string": "Internally"
+          }
+        ],
+        "impacts": [
+          {
+            "id": "07cd67f5-c28b-4e8d-b218-b198928ce78c",
+            "name": "Platform - Deployments",
+            "condition_id": "7145959c-0616-42d5-8bde-6d6acb19541d",
+            "condition_name": "Bug",
+            "type": "functionality"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [
+          {
+            "id": "07cd67f5-c28b-4e8d-b218-b198928ce78c",
+            "name": "Platform - Deployments",
+            "condition_id": "7145959c-0616-42d5-8bde-6d6acb19541d",
+            "condition_name": "Bug",
+            "type": "functionality"
+          }
+        ],
+        "environments": [],
+        "runbooks": {
+          "4d17647e-42c5-481c-8b89-e39fe254359e": "Vulnerability Incident"
+        },
+        "teams": [
+          {
+            "id": "f52eaddb-6988-4e47-82af-d36c12450272",
+            "name": "Security",
+            "description": "Responsible for ensuring the security and compliance of our systems and data.",
+            "slug": "security",
+            "created_at": "2025-09-24T18:00:05.209Z",
+            "updated_at": "2025-09-24T18:00:05.209Z",
+            "signals_ical_url": "https://app.firehydrant.io/signals/03a2b8f8-977e-4cc2-bf0d-23d34b4c634e/edb2d94f-bc4e-4d8b-8e47-71f0d571d8ab/team/f52eaddb-6988-4e47-82af-d36c12450272.ics",
+            "created_by": {
+              "id": "665630ee-a3cd-445a-a4ba-56a70bca9284",
+              "name": "Jadyn Iinuma",
+              "source": "firehydrant_user",
+              "email": "jiinuma@auditboard.com"
+            },
+            "in_support_hours": null,
+            "restrict_signals_resource_management": false
+          }
+        ]
+      },
+      "created_at": "2025-09-25T01:44:27.545Z",
+      "updated_at": "2025-10-08T05:26:51.657Z"
+    }
+  ]
+}

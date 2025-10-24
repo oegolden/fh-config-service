@@ -1,0 +1,186 @@
+{
+  "category": "incident_types",
+  "targetEnv": "FH_API_KEY__SANDBOX",
+  "timestamp": 1761291465614,
+  "items": [
+    {
+      "id": "d423c06d-8016-4575-9f7e-735f399cf461",
+      "name": "Internal Issue",
+      "description": "Internal issue that is not as major as an outage and does not impact the deployment pipeline.",
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "Internal incident. No direct customer impact. Example might be a developer experience issue.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV4",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [
+          {
+            "field_id": "39cee4ff-a858-4e0e-ab60-a202a07a4c7f",
+            "value_string": "Internally"
+          }
+        ],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-24T07:30:02.154Z",
+      "updated_at": "2025-10-24T07:30:02.154Z"
+    },
+    {
+      "id": "543d8ea8-df01-466c-8ee5-a27cf1a3a0f1",
+      "name": "Performance degradation",
+      "description": "",
+      "template": {
+        "description": "One or more systems is not performing as expected.",
+        "labels": null,
+        "severity": "SEV2",
+        "priority": "P2",
+        "tag_list": [
+          "performance"
+        ],
+        "runbook_ids": [],
+        "impacts": [
+          {
+            "id": "abf6dd8c-479e-4c5c-b6e7-4ffd62b6d2de",
+            "name": "Production",
+            "condition_id": "4eb98e5b-fdcc-43d6-be75-59ca7e188028",
+            "condition_name": "Unavailable",
+            "type": "environment"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [
+          {
+            "id": "abf6dd8c-479e-4c5c-b6e7-4ffd62b6d2de",
+            "name": "Production",
+            "condition_id": "4eb98e5b-fdcc-43d6-be75-59ca7e188028",
+            "condition_name": "Unavailable",
+            "type": "environment"
+          }
+        ],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.190Z",
+      "updated_at": "2025-10-24T07:26:48.881Z"
+    },
+    {
+      "id": "2125707a-065d-43d7-97c3-bcca48211db5",
+      "name": "Privacy violation incident",
+      "description": "",
+      "template": {
+        "description": "An incident affecting client privacy has been detected, this could be a bug exposing sensitive data, a data breach, a customer accidentally disclosing data through the tool, etc.",
+        "labels": null,
+        "severity": "SEV1",
+        "priority": "P1",
+        "tag_list": [
+          "privacy"
+        ],
+        "runbook_ids": [],
+        "impacts": [
+          {
+            "id": "abf6dd8c-479e-4c5c-b6e7-4ffd62b6d2de",
+            "name": "Production",
+            "condition_id": "4eb98e5b-fdcc-43d6-be75-59ca7e188028",
+            "condition_name": "Unavailable",
+            "type": "environment"
+          }
+        ]
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [
+          {
+            "id": "abf6dd8c-479e-4c5c-b6e7-4ffd62b6d2de",
+            "name": "Production",
+            "condition_id": "4eb98e5b-fdcc-43d6-be75-59ca7e188028",
+            "condition_name": "Unavailable",
+            "type": "environment"
+          }
+        ],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.201Z",
+      "updated_at": "2025-10-24T07:26:49.034Z"
+    },
+    {
+      "id": "78c636d9-019b-4433-bc96-1d318e1398a3",
+      "name": "Security incident",
+      "description": "",
+      "template": {
+        "labels": null,
+        "severity": "SEV1",
+        "priority": "P1",
+        "tag_list": [
+          "security"
+        ],
+        "runbook_ids": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.205Z",
+      "updated_at": "2025-10-24T07:26:49.245Z"
+    },
+    {
+      "id": "93b4f8ae-9ee2-4b5f-9016-235c0603c898",
+      "name": "Something else",
+      "description": "",
+      "template": {
+        "labels": null,
+        "severity": "SEV3",
+        "runbook_ids": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.213Z",
+      "updated_at": "2025-10-24T07:26:49.383Z"
+    },
+    {
+      "id": "b8220a2a-4704-4e93-8b4f-425c6c352759",
+      "name": "Something else",
+      "description": "",
+      "template": {
+        "labels": null,
+        "severity": "SEV3",
+        "runbook_ids": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.179Z",
+      "updated_at": "2025-10-24T02:59:56.206Z"
+    }
+  ]
+}

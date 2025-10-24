@@ -7,11 +7,12 @@ const ENVIRONMENTS = [
 ];
 
 const CATEGORIES = [
-  { id: 'incident_types', label: 'Incident Types' },
-  { id: 'runbooks', label: 'Runbooks' },
+  { id: 'teams', label: 'Teams' },
   { id: 'services', label: 'Services' },
   { id: 'functionalities', label: 'Functionalities' },
-  { id: 'custom_fields/definitions', label: 'Settings' }
+  { id: 'custom_fields/definitions', label: 'Settings' },
+  { id: 'runbooks', label: 'Runbooks' },
+  { id: 'incident_types', label: 'Incident Types' }
 ];
 
 export default function EnvironmentSync() {

@@ -23,6 +23,8 @@ if (!fs.existsSync(BACKUP_DIR)) {
 // Function to make API requests with specific key
 async function makeApiRequest(endpoint, method, body, apiKey) {
   const url = `${API_BASE_URL}/${endpoint}`;
+  const bodyText = body ? JSON.stringify(body) : null;
+  const bodyPreview = bodyText ? (bodyText.length > 2000 ? bodyText.slice(0, 2000) + '...<truncated>' : bodyText) : null;
   console.log('Making API request:', {
     url,
     method,
@@ -30,7 +32,8 @@ async function makeApiRequest(endpoint, method, body, apiKey) {
       "Content-Type": "application/json",
       Authorization: "Bearer " + apiKey.substring(0, 10) + "..."
     },
-    bodyLength: body ? JSON.stringify(body).length : 0
+    bodyLength: bodyText ? bodyText.length : 0,
+    bodyPreview
   });
   const response = await fetch(url, {
     method,
@@ -38,7 +41,7 @@ async function makeApiRequest(endpoint, method, body, apiKey) {
       "Content-Type": "application/json",
       Authorization: `Bearer ${apiKey}`,
     },
-    body: body ? JSON.stringify(body) : undefined,
+    body: bodyText || undefined,
   });
   
   if (!response.ok) {
@@ -47,9 +50,10 @@ async function makeApiRequest(endpoint, method, body, apiKey) {
       status: response.status,
       statusText: response.statusText,
       headers: Object.fromEntries(response.headers.entries()),
-      body: responseText
+      body: responseText,
+      requestBody: bodyPreview
     });
-    throw new Error(`API error (${response.status}): ${response.statusText}\nResponse: ${responseText}`);
+    throw new Error(`API error (${response.status}): ${response.statusText}\nResponse: ${responseText}\nRequest body: ${bodyPreview || '<empty>'}`);
   }
   const responseText = await response.text();
   // Some endpoints (DELETE) may return empty body; handle that gracefully
@@ -74,6 +78,87 @@ function itemKey(item) {
 function itemIdentifier(item) {
   if (!item) return null;
   return item.id || item.field_id || null;
+}
+
+// Helper: sanitize data for creation in new environment
+function sanitizeForSync(data, category) {
+  // Deep clone to avoid mutating original
+  const clean = JSON.parse(JSON.stringify(data || {}));
+
+  // Recursively remove nested 'id' fields except 'action_id'
+  function stripIds(obj) {
+    if (!obj || typeof obj !== 'object') return obj;
+    if (Array.isArray(obj)) return obj.map(stripIds);
+    const out = {};
+    for (const [k, v] of Object.entries(obj)) {
+      if (k === 'action_id') {
+        out[k] = v; // preserve action_id
+        continue;
+      }
+      if (k === 'id' || k === 'field_id' || k === 'created_at' || k === 'updated_at' || k === 'last_executed_at' || k === 'last_executed_for_incident') {
+        // skip these
+        continue;
+      }
+      // remove owner objects entirely
+      if (k === 'owner') continue;
+      // remove attachment rules to avoid nested record references
+      if (k === 'attachment_rule') continue;
+      out[k] = stripIds(v);
+    }
+    return out;
+  }
+
+  const stripped = stripIds(clean);
+
+  // Category-specific adjustments
+  if (category === 'incident_types' && stripped.template) {
+    if (stripped.template.runbook_ids) stripped.template.runbook_ids = [];
+    if (stripped.template.team_ids) stripped.template.team_ids = [];
+    if (stripped.template.impacts) stripped.template.impacts = [];
+    if (stripped.template.custom_fields) stripped.template.custom_fields = [];
+    if (stripped.template_values) {
+      stripped.template_values = {
+        services: [],
+        functionalities: [],
+        environments: [],
+        runbooks: {},
+        teams: []
+      };
+    }
+  }
+
+  if (category === 'runbooks') {
+    // Ensure steps exist and have action/task ids
+    if (!Array.isArray(stripped.steps) || stripped.steps.length === 0) {
+      stripped.steps = [{
+        action_id: 'initial_step',
+        name: 'Initial Step',
+        type: 'manual',
+        tasks: [{ action_id: 'initial_task', name: 'Manual Task', type: 'markdown', content: 'Add your task details here' }]
+      }];
+    } else {
+      stripped.steps = stripped.steps.map((step, si) => {
+        const s = { ...step };
+        if (!s.action_id) s.action_id = `step_${si}`;
+        if (!Array.isArray(s.tasks)) s.tasks = [];
+        s.tasks = s.tasks.map((task, ti) => {
+          const t = { ...task };
+          if (!t.action_id) t.action_id = `task_${si}_${ti}`;
+          // remove any nested record refs in task
+          delete t.record_id;
+          delete t.runbook_id;
+          return t;
+        });
+        return s;
+      });
+    }
+    // Remove any leftover fields that can reference other records
+    delete stripped.attachment_rule;
+    delete stripped.owner;
+    delete stripped.last_executed_for_incident;
+  }
+
+  return stripped;
 }
 
 // Sync endpoints and backup/revert functionality (must be before the general proxy)
@@ -116,20 +201,45 @@ app.post("/api/sync", async (req, res) => {
     await fs.promises.writeFile(backupPath, JSON.stringify(backupPayload, null, 2));
     console.log('Saved backup to', backupPath);
 
-    // Perform sync (create/patch)
+    // First identify and delete items that exist in target but not in source
+    const sourceKeys = new Set(items.map(it => itemKey(it)));
+    const toDelete = tItems.filter(t => !sourceKeys.has(itemKey(t)));
+    
     const results = [];
+    
+    if (toDelete.length) {
+      console.log(`Will delete ${toDelete.length} items from target that don't exist in source`);
+      for (const delItem of toDelete) {
+        try {
+          const delId = itemIdentifier(delItem);
+          if (delId) {
+            await makeApiRequest(`${category}/${delId}`, 'DELETE', null, targetKey);
+            results.push({ name: itemKey(delItem), action: 'deleted' });
+          } else {
+            console.warn('Skipping delete for item without identifier', delItem);
+            results.push({ name: itemKey(delItem), action: 'delete_skipped', error: 'no id/field_id' });
+          }
+        } catch (err) {
+          console.error('Failed to delete item', { item: delItem, err: err.message });
+          results.push({ name: itemKey(delItem), action: 'delete_failed', error: err.message });
+        }
+      }
+    }
+
+    // Then create/update items from source
     for (const sourceItem of items) {
-      const { id, ...itemData } = sourceItem;
       const targetItem = tItems.find(t => itemKey(t) === itemKey(sourceItem));
       try {
         const targetId = itemIdentifier(targetItem);
         if (targetItem && targetId) {
-          // PATCH existing item by its identifier
-          await makeApiRequest(`${category}/${targetId}`, 'PATCH', itemData, targetKey);
+          // PATCH existing item by its identifier - sanitize but preserve existing IDs
+          const sanitizedData = sanitizeForSync(sourceItem, category);
+          await makeApiRequest(`${category}/${targetId}`, 'PATCH', sanitizedData, targetKey);
           results.push({ name: itemKey(sourceItem), action: 'updated' });
         } else {
-          // No usable id on target -> create a new item
-          await makeApiRequest(category, 'POST', itemData, targetKey);
+          // No usable id on target -> create a new item with clean data
+          const sanitizedData = sanitizeForSync(sourceItem, category);
+          await makeApiRequest(category, 'POST', sanitizedData, targetKey);
           results.push({ name: itemKey(sourceItem), action: 'created' });
         }
       } catch (err) {

@@ -1,0 +1,22 @@
+{
+  "category": "runbooks",
+  "targetEnv": "FH_API_KEY__SANDBOX",
+  "timestamp": 1761292216170,
+  "items": [
+    {
+      "id": "215ba875-5123-4c0c-bc35-c68f460a9920",
+      "name": "Default",
+      "summary": "Default runbook",
+      "description": "Default runbook that auto-attaches for all incidents",
+      "type": "general",
+      "created_at": "2025-10-06T15:32:12.379Z",
+      "updated_at": "2025-10-06T15:32:12.415Z",
+      "attachment_rule": null,
+      "owner": null,
+      "categories": [
+        "Incident updates"
+      ],
+      "last_executed_at": null
+    }
+  ]
+}
