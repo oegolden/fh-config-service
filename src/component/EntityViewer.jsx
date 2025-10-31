@@ -34,6 +34,7 @@ export default function EntityViewer() {
   const [selected, setSelected] = useState({});
   const [selectedEnvironment, setSelectedEnvironment] = useState('FH_API_KEY_STATUSBOARD_SANDBOX');
   const [lastSelectedEntity, setLastSelectedEntity] = useState(null);
+  const [fullRunbookDetails, setFullRunbookDetails] = useState(null);
 
   // Fetch all entity data
   const fetchEntities = async (entity) => {
@@ -114,7 +115,31 @@ export default function EntityViewer() {
   const handleSelectChange = (entity, value) => {
     setSelected((prev) => ({ ...prev, [entity]: value }));
     setLastSelectedEntity(entity); // update the last selected entity
+    setFullRunbookDetails(null); // Clear previous runbook details
   };
+
+  // Fetch full runbook details when a runbook is selected
+  useEffect(() => {
+    const fetchRunbookDetails = async () => {
+      if (lastSelectedEntity === 'Runbooks' && selected['Runbooks']) {
+        try {
+          const response = await fetch(`http://localhost:5000/api/runbooks/${selected['Runbooks']}`, {
+            headers: {
+              'Authorization': `Bearer ${selectedEnvironment}`,
+              'Content-Type': 'application/json'
+            }
+          });
+          if (!response.ok) throw new Error('Failed to fetch runbook details');
+          const data = await response.json();
+          setFullRunbookDetails(data);
+        } catch (err) {
+          console.error('Error fetching runbook details:', err);
+          setFullRunbookDetails(null);
+        }
+      }
+    };
+    fetchRunbookDetails();
+  }, [lastSelectedEntity, selected['Runbooks'], selectedEnvironment]);
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -187,6 +212,26 @@ export default function EntityViewer() {
                 (x) => (x.id || x.field_id) === selected[lastSelectedEntity]
               );
               if (!entityData) return null;
+
+              // For runbooks, show full details if available
+              if (lastSelectedEntity === 'Runbooks') {
+                return (
+                  <div className="mb-4 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg max-h-[80vh] overflow-auto">
+                    <h2 className="text-lg font-semibold text-indigo-700 mb-2">
+                      {lastSelectedEntity}: "{entityData.name || entityData.title || entityData.display_name || entityData.id || entityData.field_id}"
+                    </h2>
+                    <div className="text-sm font-mono text-gray-800">
+                      <JsonView
+                        data={fullRunbookDetails || entityData}
+                        theme="light"
+                        shouldInitiallyExpand={(level) => level < 2}
+                      />
+                    </div>
+                  </div>
+                );
+              }
+
+              // For other entities, show the list view data
               return (
                 <div className="mb-4 p-4 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg max-h-[80vh] overflow-auto">
                   <h2 className="text-lg font-semibold text-indigo-700 mb-2">

@@ -1,0 +1,360 @@
+{
+  "category": "incident_types",
+  "targetEnv": "FH_API_KEY__SANDBOX",
+  "timestamp": 1761893691632,
+  "items": [
+    {
+      "id": "9378d17c-86d0-4490-97be-a78ca753e6f8",
+      "name": "Customer-facing system outage",
+      "description": "",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "A core business system is unavailable or malfunctioning",
+        "labels": {},
+        "severity": "SEV1",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:25.405Z",
+      "updated_at": "2025-10-31T05:40:25.405Z"
+    },
+    {
+      "id": "eb869351-d18e-41aa-ad7f-71528275b183",
+      "name": "Deployment pipeline issue",
+      "description": "Interruption in the deployment pipeline, such as Galaxy degradation",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "Deployments are impacted: [add more details]",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV3",
+        "priority": "P2",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:25.541Z",
+      "updated_at": "2025-10-31T05:40:25.541Z"
+    },
+    {
+      "id": "2fc5d233-6adb-4ff2-91f3-7a70bb01c2b8",
+      "name": "Game Day incident",
+      "description": "Not a real incident–used for practicing incident response.",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "GAMEDAY",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:25.686Z",
+      "updated_at": "2025-10-31T05:40:25.686Z"
+    },
+    {
+      "id": "d423c06d-8016-4575-9f7e-735f399cf461",
+      "name": "Internal Issue",
+      "description": "Internal issue that is not as major as an outage and does not impact the deployment pipeline.",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "Internal incident. No direct customer impact. Example might be a developer experience issue.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV4",
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-24T07:30:02.154Z",
+      "updated_at": "2025-10-31T05:40:26.007Z"
+    },
+    {
+      "id": "2b42f277-342b-4f73-8c24-2e55c2d68423",
+      "name": "Internal system outage",
+      "description": "Major internal issue that prevents use of some internal tool that does not fall under deployment pipeline issue",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "A system that isn't customer-facing or doesn't impact customer data processing is unavailable",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV2",
+        "priority": "P2",
+        "tag_list": [
+          "internal"
+        ],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:26.310Z",
+      "updated_at": "2025-10-31T05:40:26.310Z"
+    },
+    {
+      "id": "ab514e4c-0c4b-4577-8dc0-034462888bc0",
+      "name": "IT Incident",
+      "description": "Major IT task that requires attention, not submitted during off-hours",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:26.443Z",
+      "updated_at": "2025-10-31T05:40:26.443Z"
+    },
+    {
+      "id": "cc35d7b1-c7da-498b-a6e3-dcd48275e384",
+      "name": "IT Support | Off-Hours Request",
+      "description": "An IT request submitted during IT off-hours",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:26.565Z",
+      "updated_at": "2025-10-31T05:40:26.565Z"
+    },
+    {
+      "id": "543d8ea8-df01-466c-8ee5-a27cf1a3a0f1",
+      "name": "Performance degradation",
+      "description": "Though not at the level of a customer-facing system outage, there has been some degradation in the functionality of AuditBoard services",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "One or more systems is not performing as expected.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV2",
+        "tag_list": [
+          "performance"
+        ],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-06T15:32:12.190Z",
+      "updated_at": "2025-10-31T05:40:26.705Z"
+    },
+    {
+      "id": "742c90c1-1a58-4199-9253-08089cc94b2d",
+      "name": "Privacy Violation",
+      "description": "Private information has been breached, and this breach must be swiftly and discreetly addressed",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "An incident affecting client privacy has been detected, this could be a bug exposing sensitive data, a data breach, a customer accidentally disclosing data through the tool, etc.",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV1",
+        "tag_list": [
+          "privacy"
+        ],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": true,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:26.852Z",
+      "updated_at": "2025-10-31T05:40:26.852Z"
+    },
+    {
+      "id": "b880827c-f632-4fac-8840-9761e2f95e8e",
+      "name": "Security Event",
+      "description": "Security issue that does not fall under Vulnerability or Privacy Violation",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "severity": "SEV4",
+        "priority": "P1",
+        "tag_list": [
+          "security"
+        ],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": true,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:26.998Z",
+      "updated_at": "2025-10-31T05:40:26.998Z"
+    },
+    {
+      "id": "34cd46f1-eeba-42f6-83be-b72a52f49bff",
+      "name": "SQL run on production",
+      "description": "Updating databases in a customer-facing instance. This maintenance will cause downtime.",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": false,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:27.131Z",
+      "updated_at": "2025-10-31T05:40:27.131Z"
+    },
+    {
+      "id": "ffbe3e67-b09e-487d-a3d1-c2dc5cdb18a1",
+      "name": "Vulnerability",
+      "description": "An exploitable vulnerability has been identified in the AuditBoard system that must be addressed quickly and privately",
+      "allowed_role_ids": [],
+      "template": {
+        "incident_name": "",
+        "summary": "",
+        "description": "",
+        "customer_impact_summary": "",
+        "labels": {},
+        "tag_list": [],
+        "runbook_ids": [],
+        "team_ids": [],
+        "private_incident": true,
+        "custom_fields": [],
+        "impacts": []
+      },
+      "template_values": {
+        "services": [],
+        "functionalities": [],
+        "environments": [],
+        "runbooks": {},
+        "teams": []
+      },
+      "created_at": "2025-10-31T05:40:27.267Z",
+      "updated_at": "2025-10-31T05:40:27.267Z"
+    }
+  ]
+}

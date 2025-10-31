@@ -1,0 +1,30 @@
+{
+  "category": "functionalities",
+  "targetEnv": "FH_API_KEY__SANDBOX",
+  "timestamp": 1761893600663,
+  "items": [
+    {
+      "id": "6ebf27c4-9548-4374-825e-291bf38afb07",
+      "name": "TPRM",
+      "slug": "platform-deployments",
+      "description": "",
+      "created_at": "2025-10-06T15:32:11.837Z",
+      "updated_at": "2025-10-31T06:46:07.709Z",
+      "labels": {},
+      "active_incidents": [],
+      "links": [],
+      "owner": null,
+      "alert_on_add": false,
+      "auto_add_responding_team": false,
+      "updated_by": {
+        "id": "163a02ed-d86c-432e-baa5-38302df0c0d1",
+        "name": "config_service_key (bot)",
+        "source": "firehydrant_bot",
+        "email": ""
+      },
+      "services": [],
+      "external_resources": [],
+      "teams": []
+    }
+  ]
+}
