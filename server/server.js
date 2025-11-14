@@ -6,6 +6,17 @@ import dotenv from "dotenv";
 import fs from 'fs';
 import path from 'path';
 
+import {
+  GetObjectCommand,
+  NoSuchKey,
+  S3Client,
+  S3ServiceException,
+  DeleteObjectCommand,
+  waitUntilObjectNotExists,
+  paginateListObjectsV2,
+} from "@aws-sdk/client-s3";
+
+
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -14,12 +25,15 @@ app.use(express.json());
 const API_BASE_URL = "https://api.firehydrant.io/v1";
 const SOURCE_API_KEY = process.env.FH_API_KEY_STATUSBOARD_SANDBOX;
 const TARGET_API_KEY = process.env.FH_API_KEY__SANDBOX;
-const BACKUP_DIR = path.join(process.cwd(), 'server', 'backups');
 
-// Ensure backup directory exists
-if (!fs.existsSync(BACKUP_DIR)) {
-  fs.mkdirSync(BACKUP_DIR, { recursive: true });
-}
+// source: docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
+// load aws sdk
+var AWS = require("aws-sdk");
+AWS.config.update({ region: "us-west-1" });
+// Create S3 service object
+var s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+// call S3 to retrieve upload file to specified bucket
+var bucketName = "ab-statusboard-test-us-west-1"
 
 // Helper: Get backup filename for a category/environment pair with timestamp
 function getBackupFilename(category, targetEnv, timestamp = null) {
@@ -29,30 +43,51 @@ function getBackupFilename(category, targetEnv, timestamp = null) {
   return `${safeCategory}_${safeEnv}_${ts}.json`;
 }
 
+// Helper: Get all objects in S3 bucket
+//from https://stackoverflow.com/questions/9437581/node-js-amazon-s3-how-to-iterate-through-all-files-in-a-bucket
+
+function listAllKeys(token, cb, allKeys)
+{
+  var opts = { Bucket: bucketName };
+  if(token) opts.ContinuationToken = token;
+
+  s3.listObjectsV2(opts, function(err, data){
+    allKeys = allKeys.concat(data.Contents);
+
+    if(data.IsTruncated)
+      allKeys = listAllKeys(data.NextContinuationToken, cb, allKeys);
+    else
+      cb();
+
+    return allKeys;
+  });
+}
+
 // Helper: Get all backup files for a category/environment
+// from https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_s3_code_examples.html
 function getBackupFiles(category, targetEnv) {
   try {
     const safeCategory = category.replace(/[\/\\]/g, '_');
     const safeEnv = targetEnv.replace(/[^a-zA-Z0-9_]/g, '_');
     const prefix = `${safeCategory}_${safeEnv}_`;
-    
-    if (!fs.existsSync(BACKUP_DIR)) {
-      return [];
+    const client = new S3Client({});
+    const objects = [];
+    var files = paginateListObjectsV2(
+      { client, pageSize: 1000},
+      { Bucket: bucketName },
+    );
+
+    for (const page of files) {
+      objects.push(page.Contents.map((o) => o.Key));
     }
-    
-    const files = fs.readdirSync(BACKUP_DIR)
-      .filter(file => file.startsWith(prefix) && file.endsWith('.json'))
+    objects[0].filter(file => file.startsWith(prefix) && file.endsWith('.json'))
       .map(file => {
-        const filePath = path.join(BACKUP_DIR, file);
         try {
-          const stats = fs.statSync(filePath);
-          const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           return {
-            filename: file,
-            path: filePath,
-            timestamp: content.timestamp || stats.mtimeMs,
-            itemCount: content.items?.length || 0,
-            size: stats.size
+            filename: file["filename"],
+            timestamp: file["timestamp"],
+            itemCount: file["itemCount"],
+            size: file["size"]
           };
         } catch (err) {
           console.error(`Error reading backup file ${file}:`, err);
@@ -61,35 +96,63 @@ function getBackupFiles(category, targetEnv) {
       })
       .filter(Boolean)
       .sort((a, b) => b.timestamp - a.timestamp); // Newest first
-    
-    return files;
-  } catch (err) {
-    console.error('Error getting backup files:', err);
-    return [];
+
+  } catch (caught) {
+    if (
+      caught instanceof S3ServiceException &&
+      caught.name === "NoSuchBucket"
+    ) {
+      console.error(
+        `Error from S3 while listing objects for "${bucketName}". The bucket doesn't exist.`,
+      );
+    } else if (caught instanceof S3ServiceException) {
+      console.error(
+        `Error from S3 while listing objects for "${bucketName}".  ${caught.name}: ${caught.message}`,
+      );
+    } else {
+      throw caught;
+    }
   }
-}
+};
 
 // Helper: Get specific backup file
-function getBackupFile(category, targetEnv, filename) {
-  const filePath = path.join(BACKUP_DIR, filename);
-  if (!fs.existsSync(filePath)) {
-    return null;
-  }
-  try {
-    const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    const stats = fs.statSync(filePath);
-    return {
-      filename,
-      path: filePath,
-      timestamp: content.timestamp || stats.mtimeMs,
-      itemCount: content.items?.length || 0,
-      size: stats.size,
-      items: content.items
-    };
-  } catch (err) {
-    console.error(`Error reading backup file ${filename}:`, err);
-    return null;
-  }
+// copied fro: https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_s3_code_examples.html
+function getBackupFile(category, targetEnv, key) {
+  const main = async ({ bucketName, key }) => {
+    const client = new S3Client({});
+
+    try {
+      const response = await client.send(
+        new GetObjectCommand({
+          Bucket: bucketName,
+          Key: key,
+        }),
+      );
+      // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
+      const str = await response.Body.transformToString();
+      console.log(str);
+      return {
+        filename: key["filename"],
+        timestamp: key["timestamp"],
+        itemCount: key["itemCount"],
+        size: key["size"]
+      };
+    } catch (caught) {
+      if (caught instanceof NoSuchKey) {
+        console.error(
+          `Error from S3 while getting object "${key}" from "${bucketName}". No such key exists.`,
+        );
+      } else if (caught instanceof S3ServiceException) {
+        console.error(
+          `Error from S3 while getting object from ${bucketName}.  ${caught.name}: ${caught.message}`,
+        );
+      } else {
+        throw caught;
+      }
+      return {}
+    }
+
+  };
 }
 
 // Function to make API requests with specific key
@@ -313,9 +376,29 @@ app.post("/api/sync", async (req, res) => {
       items: tItems 
     };
     const backupFilename = getBackupFilename(category, targetEnv, timestamp);
-    const backupPath = path.join(BACKUP_DIR, backupFilename);
-    await fs.promises.writeFile(backupPath, JSON.stringify(backupPayload, null, 2));
-    console.log(`✅ Saved backup to: ${backupPath} (${tItems.length} items)`);
+    var uploadParams = { Bucket: bucketName, Key: "", Body: "" };
+
+    // Configure the file stream and obtain the upload parameters
+    var fs = require("fs");
+    var fileStream = fs.createReadStream(backupFilename);
+    fileStream.on("error", function (err) {
+      console.log("File Error", err);
+    });
+    uploadParams.Body = fileStream;
+    var path = require("path");
+    uploadParams.Key = path.basename(backupFilename);
+
+    // call S3 to retrieve upload file to specified bucket
+    s3.upload(uploadParams, function (err, data) {
+      if (err) {
+        console.log("Error", err);
+      }
+      if (data) {
+        console.log("Upload Success", data.Location);
+      }
+    });
+
+    console.log(`✅ Saved backup to: ${bucketName} (${tItems.length} items)`);
 
     // First identify and delete items that exist in target but not in source
     const sourceKeys = new Set(items.map(it => itemKey(it)));
@@ -447,22 +530,41 @@ app.get('/api/sync/backup/:category/:targetEnv/:filename', async (req, res) => {
 });
 
 // Delete specific backup: DELETE /api/sync/backup/:category/:targetEnv/:filename
+//from https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_s3_code_examples.html
 app.delete('/api/sync/backup/:category/:targetEnv/:filename', async (req, res) => {
   try {
     const { category, targetEnv, filename } = req.params;
-    const backupPath = path.join(BACKUP_DIR, filename);
-    
-    if (!fs.existsSync(backupPath)) {
-      return res.status(404).json({ error: 'Backup not found' });
+    const client = new S3Client({});
+    await client.send(
+      new DeleteObjectCommand({
+        Bucket: bucketName,
+        Key: filename,
+      }),
+    );
+    await waitUntilObjectNotExists(
+      { client },
+      { Bucket: bucketName, Key: filename },
+    );
+    // A successful delete, or a delete for a non-existent object, both return
+    // a 204 response code.
+    console.log(
+      `The object "🗑️ ${filename}" from bucket "${bucketName}" was deleted, or it didn't exist.`,
+    );
+  } catch (caught) {
+    if (
+      caught instanceof S3ServiceException &&
+      caught.name === "NoSuchBucket"
+    ) {
+      console.error(
+        `Error from S3 while deleting object from ${bucketName}. The bucket doesn't exist.`,
+      );
+    } else if (caught instanceof S3ServiceException) {
+      console.error(
+        `Error from S3 while deleting object from ${bucketName}.  ${caught.name}: ${caught.message}`,
+      );
+    } else {
+      throw caught;
     }
-    
-    await fs.promises.unlink(backupPath);
-    console.log(`🗑️ Deleted backup: ${backupPath}`);
-    
-    res.json({ success: true, message: 'Backup deleted successfully' });
-  } catch (err) {
-    console.error('Delete backup error', err);
-    res.status(500).json({ error: err.message });
   }
 });
 
