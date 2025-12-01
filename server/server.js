@@ -3,8 +3,8 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
-import fs from 'fs';
-import path from 'path';
+import AWS from 'aws-sdk';
+import fs from "fs";
 
 import {
   GetObjectCommand,
@@ -28,10 +28,9 @@ const TARGET_API_KEY = process.env.FH_API_KEY__SANDBOX;
 
 // source: docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
 // load aws sdk
-var AWS = require("aws-sdk");
 AWS.config.update({ region: "us-west-1" });
 // Create S3 service object
-var s3 = new AWS.S3({ apiVersion: "2006-03-01" });
+const s3 = new AWS.S3();
 // call S3 to retrieve upload file to specified bucket
 var bucketName = "ab-statusboard-test-us-west-1"
 
@@ -379,7 +378,6 @@ app.post("/api/sync", async (req, res) => {
     var uploadParams = { Bucket: bucketName, Key: "", Body: "" };
 
     // Configure the file stream and obtain the upload parameters
-    var fs = require("fs");
     var fileStream = fs.createReadStream(backupFilename);
     fileStream.on("error", function (err) {
       console.log("File Error", err);
