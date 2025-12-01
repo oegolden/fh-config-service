@@ -3,8 +3,9 @@ import express from "express";
 import fetch from "node-fetch";
 import cors from "cors";
 import dotenv from "dotenv";
-import AWS from 'aws-sdk';
+import aws from 'aws-sdk';
 import fs from "fs";
+import path from "path";
 
 import {
   GetObjectCommand,
@@ -28,9 +29,13 @@ const TARGET_API_KEY = process.env.FH_API_KEY__SANDBOX;
 
 // source: docs.aws.amazon.com/sdk-for-javascript/v2/developer-guide/s3-example-creating-buckets.html
 // load aws sdk
-AWS.config.update({ region: "us-west-1" });
-// Create S3 service object
-const s3 = new AWS.S3();
+// Create S3 service object https://stackoverflow.com/questions/69884898/how-to-upload-a-stream-to-s3-with-aws-sdk-v3
+const s3 = new aws.S3({
+  accessKeyId: process.env.S3_API_KEY,
+  secretAccessKey: process.env.S3_API_SECRET,
+  region: process.env.S3_REGION,
+  signatureVersion: 'v4',
+});
 // call S3 to retrieve upload file to specified bucket
 var bucketName = "ab-statusboard-test-us-west-1"
 
@@ -70,14 +75,21 @@ function getBackupFiles(category, targetEnv) {
     const safeEnv = targetEnv.replace(/[^a-zA-Z0-9_]/g, '_');
     const prefix = `${safeCategory}_${safeEnv}_`;
     const client = new S3Client({});
-    const objects = [];
+
     var files = paginateListObjectsV2(
       { client, pageSize: 1000},
       { Bucket: bucketName },
     );
-
-    for (const page of files) {
-      objects.push(page.Contents.map((o) => o.Key));
+    console.log("FILES:\n"+files+"\nEND FILES");
+    const objects = []
+    //bro im so sorry for this messy code here
+    runloop()
+    async function runloop() {
+      while (true) {
+        const page = await files.next();
+        if (page.done) break;
+        objects.push(page.Contents.map((o) => o.Key));
+      }
     }
     objects[0].filter(file => file.startsWith(prefix) && file.endsWith('.json'))
       .map(file => {
@@ -383,7 +395,6 @@ app.post("/api/sync", async (req, res) => {
       console.log("File Error", err);
     });
     uploadParams.Body = fileStream;
-    var path = require("path");
     uploadParams.Key = path.basename(backupFilename);
 
     // call S3 to retrieve upload file to specified bucket
