@@ -17,7 +17,6 @@ import {
   paginateListObjectsV2,
 } from "@aws-sdk/client-s3";
 
-
 dotenv.config();
 const app = express();
 app.use(cors());
@@ -80,9 +79,8 @@ function getBackupFiles(category, targetEnv) {
       { client, pageSize: 1000},
       { Bucket: bucketName },
     );
-    console.log("FILES:\n"+files+"\nEND FILES");
     const objects = []
-    //bro im so sorry for this messy code here
+    //issue: files.next() is an object promises
     runloop()
     async function runloop() {
       while (true) {
@@ -91,6 +89,7 @@ function getBackupFiles(category, targetEnv) {
         objects.push(page.Contents.map((o) => o.Key));
       }
     }
+    //issue: nothing got pushed to objects lol
     objects[0].filter(file => file.startsWith(prefix) && file.endsWith('.json'))
       .map(file => {
         try {
